@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Spider Clock</title>
+  <link rel="stylesheet" href="./Spider%20clock.css" />
+</head>
+<body>
+  <div class="scene">
+    <div class="stars"></div>
+    <div class="moon"></div>
+
+    <div class="clock-card">
+      <h1 class="title">Spider Clock</h1>
+
+      <div class="clock-wrap">
+        <div class="clock">
+          <div class="clock-face">
+            <div class="web web-outer"></div>
+            <div class="web web-inner"></div>
+
+            <div class="tick tick-12"></div>
+            <div class="tick tick-1"></div>
+            <div class="tick tick-2"></div>
+            <div class="tick tick-3"></div>
+            <div class="tick tick-4"></div>
+            <div class="tick tick-5"></div>
+            <div class="tick tick-6"></div>
+            <div class="tick tick-7"></div>
+            <div class="tick tick-8"></div>
+            <div class="tick tick-9"></div>
+            <div class="tick tick-10"></div>
+            <div class="tick tick-11"></div>
+
+            <div class="spider">
+              <div class="leg leg-1"></div>
+              <div class="leg leg-2"></div>
+              <div class="leg leg-3"></div>
+              <div class="leg leg-4"></div>
+              <div class="leg leg-5"></div>
+              <div class="leg leg-6"></div>
+              <div class="spider-head"></div>
+              <div class="spider-body"></div>
+              <div class="eye eye-left"></div>
+              <div class="eye eye-right"></div>
+            </div>
+
+            <div class="hand hour" id="hour"></div>
+            <div class="hand minute" id="minute"></div>
+            <div class="hand second" id="second"></div>
+
+            <div class="center-dot"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="digital-panel">
+        <div class="digital" id="digital"></div>
+        <div class="date" id="date"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function updateClock() {
+      const now = new Date();
+      const hours = now.getHours();
+      const minutes = now.getMinutes();
+      const seconds = now.getSeconds();
+      const milliseconds = now.getMilliseconds();
+
+      const secondDegrees = ((seconds + milliseconds / 1000) / 60) * 360;
+      const minuteDegrees = ((minutes + seconds / 60) / 60) * 360;
+      const hourDegrees = ((hours % 12 + minutes / 60) / 12) * 360;
+
+      document.getElementById('second').style.transform = `translateX(-50%) rotate(${secondDegrees}deg)`;
+      document.getElementById('minute').style.transform = `translateX(-50%) rotate(${minuteDegrees}deg)`;
+      document.getElementById('hour').style.transform = `translateX(-50%) rotate(${hourDegrees}deg)`;
+
+      const hours12 = hours % 12 || 12;
+      const ampm = hours >= 12 ? 'PM' : 'AM';
+      const timeString = `${String(hours12).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')} ${ampm}`;
+      document.getElementById('digital').textContent = timeString;
+
+      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      document.getElementById('date').textContent = now.toLocaleDateString('en-US', options);
+    }
+
+    updateClock();
+    setInterval(updateClock, 100);
+  </script>
+</body>
+</html>
